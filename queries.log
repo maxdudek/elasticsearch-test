@@ -1,0 +1,139 @@
+Format of log entries:
+
+{
+    "body": "The json body of the query",
+    "result": "The json retured by the query",
+    "queryTime": "Time in seconds taken to run the query",
+    "time": "When the query was run",
+    "type": "The type of query run (count, search, or sql)"
+}
+
+
+{
+    "body": {
+        "query": {
+            "bool": {
+                "filter": {
+                    "range": {
+                        "acct.ncpus": {
+                            "gte": 16, 
+                            "lte": 16
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    "result": {
+        "count": 190555, 
+        "_shards": {
+            "successful": 1, 
+            "failed": 0, 
+            "skipped": 0, 
+            "total": 1
+        }
+    }, 
+    "queryTime": 0.467199, 
+    "time": "2019-08-08 11:07:56",
+    "type": "count"
+}
+
+{
+    "body": {
+        "query": {
+            "bool": {
+                "filter": {
+                    "range": {
+                        "acct.ncpus": {
+                            "gte": 16, 
+                            "lte": 16
+                        }
+                    }
+                }
+            }
+        }
+    }, 
+    "result": {
+        "count": 190555, 
+        "_shards": {
+            "successful": 1, 
+            "failed": 0, 
+            "skipped": 0, 
+            "total": 1
+        }
+    }, 
+    "queryTime": 0.018592119216918945, 
+    "time": "2019-08-08 11:09:12",
+    "type": "count"
+}
+
+{
+    "body": {
+        "query": "SELECT AVG(cpu.nodecpus.user.avg) FROM \"jobs-index\" WHERE acct.ncpus = 16"
+    }, 
+    "result": {
+        "rows": [
+            [
+                0.6413804378627596
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(cpu.nodecpus.user.avg)"
+            }
+        ]
+    }, 
+    "queryTime": 0.8819150924682617, 
+    "time": "2019-08-08 11:34:43",
+    "type": "sql"
+}
+
+{
+    "body": {
+        "query": "SELECT AVG(cpu.nodecpus.user.avg) FROM \"jobs-index\" WHERE acct.ncpus = 16"
+    }, 
+    "result": {
+        "rows": [
+            [
+                0.6413804378627596
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(cpu.nodecpus.user.avg)"
+            }
+        ]
+    }, 
+    "queryTime": 0.48316287994384766, 
+    "time": "2019-08-08 11:35:20",
+    "type": "sql"
+}
+
+{
+    "body": {
+        "query": "SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM \"jobs-index\" WHERE acct.ncpus = 16"
+    }, 
+    "result": {
+        "rows": [
+            [
+                0.6413804378627596, 
+                190555
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(cpu.nodecpus.user.avg)"
+            }, 
+            {
+                "type": "long", 
+                "name": "COUNT(*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.1232900619506836, 
+    "time": "2019-08-08 11:38:11",
+    "type": "sql"
+}

@@ -1,0 +1,9 @@
+{
+    "settings": {
+        "index": {
+            "mapping.total_fields.limit": 10000,
+            "number_of_replicas": "1",
+            "number_of_shards": "1"
+        }
+    }
+}
