@@ -61,5 +61,10 @@ sqlExample = {
     "query": 'SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" WHERE acct.ncpus = 16'
 }
 
+# SQL queries return 'null' if the requested field is not present in a doc
+sqlExample2 = {
+    "query": 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index" LIMIT 100'
+}
+
 # SQL queries can only be run when queryType == 'sql'
 query(sqlExample, queryType='sql')
