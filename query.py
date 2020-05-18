@@ -66,5 +66,13 @@ sqlExample2 = {
     "query": 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index" LIMIT 100'
 }
 
+
+
+sqlExample3 = {
+    "query": 'SELECT acct.ncpus, AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" GROUP BY acct.ncpus'
+}
+
 # SQL queries can only be run when queryType == 'sql'
-query(sqlExample, queryType='sql')
+query(sqlExample3, queryType='sql')
+
+# Test Comment 2

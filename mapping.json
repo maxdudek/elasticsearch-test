@@ -18058,6 +18058,26 @@
                                     }
                                 }
                             },
+                            "out-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
                             "in-bytes": {
                                 "properties": {
                                     "cnt": {
@@ -18281,6 +18301,50 @@
                                     },
                                     "avg": {
                                         "type": "long"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "virbr0": {
+                        "properties": {
+                            "out-bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "out-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
                                     }
                                 }
                             }
@@ -18574,6 +18638,26 @@
                     "eno3": {
                         "properties": {
                             "out-bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "out-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-packets": {
                                 "properties": {
                                     "cnt": {
                                         "type": "long"
@@ -18984,33 +19068,32 @@
                             }
                         }
                     },
-                    "eno4": {
+                    "eno3d1": {
                         "properties": {
                             "out-bytes": {
                                 "properties": {
-                                    "std": {
-                                        "type": "float"
-                                    },
-                                    "med": {
-                                        "type": "float"
-                                    },
                                     "cnt": {
                                         "type": "long"
                                     },
-                                    "cov": {
+                                    "avg": {
                                         "type": "float"
+                                    }
+                                }
+                            },
+                            "out-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
                                     },
-                                    "max": {
+                                    "avg": {
                                         "type": "float"
-                                    },
-                                    "min": {
-                                        "type": "float"
-                                    },
-                                    "skw": {
-                                        "type": "float"
-                                    },
-                                    "krt": {
-                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-packets": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
                                     },
                                     "avg": {
                                         "type": "float"
@@ -19019,29 +19102,8 @@
                             },
                             "in-bytes": {
                                 "properties": {
-                                    "std": {
-                                        "type": "float"
-                                    },
-                                    "med": {
-                                        "type": "float"
-                                    },
                                     "cnt": {
                                         "type": "long"
-                                    },
-                                    "cov": {
-                                        "type": "float"
-                                    },
-                                    "max": {
-                                        "type": "float"
-                                    },
-                                    "min": {
-                                        "type": "float"
-                                    },
-                                    "skw": {
-                                        "type": "float"
-                                    },
-                                    "krt": {
-                                        "type": "float"
                                     },
                                     "avg": {
                                         "type": "float"
@@ -19050,7 +19112,7 @@
                             }
                         }
                     },
-                    "virbr0": {
+                    "enp4s0f1": {
                         "properties": {
                             "out-bytes": {
                                 "properties": {
@@ -20574,32 +20636,33 @@
                             }
                         }
                     },
-                    "enp4s0f1": {
+                    "eno4": {
                         "properties": {
                             "out-bytes": {
                                 "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
                                     "cnt": {
                                         "type": "long"
                                     },
-                                    "avg": {
+                                    "cov": {
                                         "type": "float"
-                                    }
-                                }
-                            },
-                            "out-packets": {
-                                "properties": {
-                                    "cnt": {
-                                        "type": "long"
                                     },
-                                    "avg": {
+                                    "max": {
                                         "type": "float"
-                                    }
-                                }
-                            },
-                            "in-packets": {
-                                "properties": {
-                                    "cnt": {
-                                        "type": "long"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
                                     },
                                     "avg": {
                                         "type": "float"
@@ -20608,8 +20671,29 @@
                             },
                             "in-bytes": {
                                 "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
                                     "cnt": {
                                         "type": "long"
+                                    },
+                                    "cov": {
+                                        "type": "float"
+                                    },
+                                    "max": {
+                                        "type": "float"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
                                     },
                                     "avg": {
                                         "type": "float"
@@ -23418,6 +23502,15 @@
                                         },
                                         "type": "text"
                                     },
+                                    "cpiref": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
                                     "cpu_user": {
                                         "fields": {
                                             "keyword": {
@@ -23513,6 +23606,15 @@
                                         },
                                         "type": "text"
                                     },
+                                    "cpiref": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
                                     "cpu_user": {
                                         "fields": {
                                             "keyword": {
@@ -23582,6 +23684,15 @@
                             "warnings": {
                                 "properties": {
                                     "cpu_idle": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpiref": {
                                         "fields": {
                                             "keyword": {
                                                 "ignore_above": 256,
@@ -24669,6 +24780,138 @@
                             }
                         }
                     },
+                    "sde": {
+                        "properties": {
+                            "read": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "read_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sdf": {
+                        "properties": {
+                            "read": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "read_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sdg": {
+                        "properties": {
+                            "read": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "read_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    },
                     "sda": {
                         "properties": {
                             "read": {
@@ -25048,6 +25291,94 @@
                                     },
                                     "avg": {
                                         "type": "long"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sdh": {
+                        "properties": {
+                            "read": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "read_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "sdi": {
+                        "properties": {
+                            "read": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "read_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "write_bytes": {
+                                "properties": {
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "avg": {
+                                        "type": "float"
                                     }
                                 }
                             }
