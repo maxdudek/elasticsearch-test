@@ -1753,3 +1753,355 @@ Format of log entries:
     "queryTime": 5.885251045227051, 
     "time": "2020-05-14 14:13:28"
 }
+
+{
+    "body": {
+        "query": "SELECT MIN(acct.start_time), MAX(acct.start_time) FROM \"jobs-index\""
+    }, 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                1389199000.0, 
+                1564977465.0
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "MIN(acct.start_time)"
+            }, 
+            {
+                "type": "long", 
+                "name": "MAX(acct.start_time)"
+            }
+        ]
+    }, 
+    "queryTime": 3.543938159942627, 
+    "time": "2020-05-27 09:19:18"
+}
+
+{
+    "body": "SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM \"jobs-index\" WHERE acct.ncpus = 16", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0.6460747027983171, 
+                170036
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(cpu.nodecpus.user.avg)"
+            }, 
+            {
+                "type": "long", 
+                "name": "COUNT(*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.33403706550598145, 
+    "time": "2020-06-10 19:54:54"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 \n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                812772
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.10376906394958496, 
+    "time": "2020-06-10 19:56:40"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                99726
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.0878901481628418, 
+    "time": "2020-06-11 15:10:33"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                62824
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.09531903266906738, 
+    "time": "2020-06-11 15:10:59"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED'\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                56444
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.08310294151306152, 
+    "time": "2020-06-11 15:11:20"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 154631880000 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED'\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.03854703903198242, 
+    "time": "2020-06-11 15:25:02"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED'\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                56444
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.03681492805480957, 
+    "time": "2020-06-11 15:25:12"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.end_time, acct.start_time) > 10\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.7201118469238281, 
+    "time": "2020-06-11 15:28:08"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.end_time, acct.start_time) > 1\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.7111361026763916, 
+    "time": "2020-06-11 15:28:19"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.end_time, acct.start_time) > 0\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.22781705856323242, 
+    "time": "2020-06-11 15:28:28"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 0\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                56290
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.16770696640014648, 
+    "time": "2020-06-11 15:28:54"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= 1546318800 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                36137
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.15207815170288086, 
+    "time": "2020-06-11 15:29:01"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= '2019-01-01'::datetime AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                36220
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.13708281517028809, 
+    "time": "2020-06-11 15:29:59"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= '2019-01-01'::datetime AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND\n\"cpu.effcpus.all\" = 1\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                647
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.08098101615905762, 
+    "time": "2020-06-11 15:48:48"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= '2019-01-01'::datetime AND\n\"cpu.effcpus.all\" = 1 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND\n\"cpu.nodecpus.all.cnt\" - \"cpu.jobcpus.all.cnt\" = 0\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                210
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.18903803825378418, 
+    "time": "2020-06-11 15:50:54"
+}
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= '2019-01-01'::datetime AND\n\"cpu.effcpus.all\" = 1 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND\n\"cpu.nodecpus.all.cnt\" - \"cpu.jobcpus.all.cnt\" = 0\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                210
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.08963513374328613, 
+    "time": "2020-06-11 15:57:19"
+}

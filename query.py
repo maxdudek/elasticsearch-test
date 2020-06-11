@@ -18,7 +18,7 @@ def query(body, queryType='sql'):
 
     startTime = time()
     if queryType == 'sql':
-        result = es.transport.perform_request('POST', '/_xpack/sql', params={'format': 'json'}, body=body)
+        result = es.transport.perform_request('POST', '/_xpack/sql', params={'format': 'json'}, body={'query': body})
     elif queryType == 'count':
         result = es.count(index=INDEX, body=body)
     elif queryType == 'search':
@@ -39,6 +39,10 @@ def query(body, queryType='sql'):
         log.write('\n')
         printJson(logInfo)
 
+def clearCache():
+    result = es.transport.perform_request('POST', '/_cache/clear')
+    printJson(result)
+
 
 # Example Query DSL
 dslExample = {
@@ -57,22 +61,32 @@ dslExample = {
 }
 
 # Example SQL query
-sqlExample = {
-    "query": 'SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" WHERE acct.ncpus = 16'
-}
+sqlExample = 'SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" WHERE acct.ncpus = 16'
 
 # SQL queries return 'null' if the requested field is not present in a doc
-sqlExample2 = {
-    "query": 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index" LIMIT 100'
-}
+sqlExample2 = 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index" LIMIT 100'
+
+sqlExample3 = 'SELECT acct.ncpus, AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" GROUP BY acct.ncpus'
+
+sqlExample4 = 'SELECT MIN(acct.start_time), MAX(acct.start_time) FROM "jobs-index"'
+
+joeQuery = """
+SELECT COUNT (*)
+FROM "jobs-index"
+WHERE 
+acct.end_time >= '2019-01-01'::datetime AND
+"cpu.effcpus.all" = 1 AND
+acct.ncpus > 1 AND
+cpu.effcpus.user.avg > 0.9 AND
+acct.exit_status = 'COMPLETED' AND
+DATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND
+"cpu.nodecpus.all.cnt" - "cpu.jobcpus.all.cnt" = 0
+"""
 
 
-
-sqlExample3 = {
-    "query": 'SELECT acct.ncpus, AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" GROUP BY acct.ncpus'
-}
 
 # SQL queries can only be run when queryType == 'sql'
-query(sqlExample3, queryType='sql')
+clearCache()
+query(joeQuery, queryType='sql')
 
 # Test Comment 2

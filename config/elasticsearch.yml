@@ -20,6 +20,7 @@ cluster.name: ccr-es
 #
 # Use a descriptive name for the node:
 #
+# MUST BE DIFFERENT ON ALL NODES
 node.name: es-01
 #
 # Add custom attributes to the node:
