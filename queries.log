@@ -2105,3 +2105,93 @@ Format of log entries:
     "queryTime": 0.08963513374328613, 
     "time": "2020-06-11 15:57:19"
 }
+
+{
+    "body": "SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM \"jobs-index\" WHERE acct.ncpus = 16", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0.6543138855021994, 
+                136090
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(cpu.nodecpus.user.avg)"
+            }, 
+            {
+                "type": "long", 
+                "name": "COUNT(*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.15282893180847168, 
+    "time": "2020-06-12 14:29:21"
+}
+
+{
+    "body": "SELECT AVG(\"cpu.nodecpus.user.avg\"), COUNT(*) FROM \"jobs-index\" WHERE \"acct.ncpus\" = 16", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                0.6543138855021994, 
+                136090
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "double", 
+                "name": "AVG(\"cpu.nodecpus.user.avg\")"
+            }, 
+            {
+                "type": "long", 
+                "name": "COUNT(*)"
+            }
+        ]
+    }, 
+    "queryTime": 0.10018181800842285, 
+    "time": "2020-06-12 14:29:21"
+}
+
+{
+    "body": {
+        "query": {
+            "nested": {
+                "path": "network.nested_list", 
+                "query": {
+                    "bool": {
+                        "must": [
+                            {
+                                "match": {
+                                    "network.nested_list._key": "lo"
+                                }
+                            }, 
+                            {
+                                "range": {
+                                    "network.nested_list.out-bytes.avg": {
+                                        "gt": 1000000
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    }, 
+    "type": "count", 
+    "result": {
+        "count": 167541, 
+        "_shards": {
+            "successful": 1, 
+            "failed": 0, 
+            "skipped": 0, 
+            "total": 1
+        }
+    }, 
+    "queryTime": 0.39231181144714355, 
+    "time": "2020-06-12 20:31:49"
+}

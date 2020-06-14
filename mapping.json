@@ -603,31 +603,19 @@
             "acct": {
                 "properties": {
                     "uid": {
-                        "type": "long"
+                        "type": "keyword"
                     },
                     "exit_status": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "resource_id": {
-                        "type": "long"
+                        "type": "keyword"
                     },
                     "ncpus": {
                         "type": "long"
                     },
                     "host_list": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "hostcores": {
                         "properties": {
@@ -655,76 +643,34 @@
                         "type": "text"
                     },
                     "submit": {
-                        "type": "long"
+                        "type": "keyword"
                     },
                     "id": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "local_job_id": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "group": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "reqmem": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "eligible": {
-                        "type": "long"
+                        "type": "keyword"
                     },
                     "hostname": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "exit_code": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "node_list": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "gid": {
-                        "type": "long"
+                        "type": "keyword"
                     },
                     "reqcpus": {
                         "type": "long"
@@ -746,43 +692,19 @@
                         "type": "text"
                     },
                     "user": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "account": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "partition": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "timelimit": {
                         "type": "long"
                     },
                     "hosts": {
-                        "fields": {
-                            "keyword": {
-                                "ignore_above": 256,
-                                "type": "keyword"
-                            }
-                        },
-                        "type": "text"
+                        "type": "keyword"
                     },
                     "end_time": {
                         "type": "date",
@@ -791,16 +713,11 @@
                 }
             },
             "id": {
-                "fields": {
-                    "keyword": {
-                        "ignore_above": 256,
-                        "type": "keyword"
-                    }
-                },
-                "type": "text"
+                "type": "keyword"
             },
             "errors": {
-                "type": "flattened"
+                "type": "text",
+                "fielddata": true
             },
             "catastrophe": {
                 "properties": {
@@ -1820,7 +1737,7 @@
                         }
                     },
                     "error": {
-                        "type": "flattened"
+                        "type": "text"
                     }
                 }
             },
@@ -2029,7 +1946,39 @@
                     "cpusallowed": {
                         "properties": {
                             "nested_list": {
-                                "type": "nested"
+                                "type": "nested",
+                                "properties": {
+                                    "_key": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "node": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpu_list": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "error": {
+                                        "type": "long"
+                                    }
+                                }
                             },
                             "error": {
                                 "type": "keyword"
@@ -2037,7 +1986,7 @@
                         }
                     },
                     "error": {
-                        "type": "flattened"
+                        "type": "text"
                     }
                 }
             },
@@ -2667,8 +2616,482 @@
                     },
                     "hostmap": {
                         "properties": {
+                            "cpn-f11-19-02": {
+                                "type": "long"
+                            },
+                            "cpn-p27-10-01": {
+                                "type": "long"
+                            },
+                            "cpn-f15-04%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-11-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-09-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-11-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "d11n13": {
+                                "type": "long"
+                            },
+                            "f15n34": {
+                                "type": "long"
+                            },
+                            "d12n10": {
+                                "type": "long"
+                            },
+                            "d12n11": {
+                                "type": "long"
+                            },
+                            "d12n12": {
+                                "type": "long"
+                            },
+                            "d12n13": {
+                                "type": "long"
+                            },
+                            "d12n14": {
+                                "type": "long"
+                            },
+                            "d12n15": {
+                                "type": "long"
+                            },
+                            "cpn-d12-12%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-12-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d12-04%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p28-42": {
+                                "type": "long"
+                            },
+                            "cpn-p28-41": {
+                                "type": "long"
+                            },
+                            "cpn-p27-07-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-29%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-13-01": {
+                                "type": "long"
+                            },
+                            "cpn-p27-13-02": {
+                                "type": "long"
+                            },
+                            "cpn-f11-17-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-14%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n40": {
+                                "type": "long"
+                            },
+                            "cpn-d11-03%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-09-02": {
+                                "type": "long"
+                            },
+                            "cpn-p27-09-01": {
+                                "type": "long"
+                            },
+                            "d12n09": {
+                                "type": "long"
+                            },
+                            "d12n08": {
+                                "type": "long"
+                            },
+                            "cpn-f15-18%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "d12n06": {
+                                "type": "long"
+                            },
+                            "d12n05": {
+                                "type": "long"
+                            },
+                            "d12n04": {
+                                "type": "long"
+                            },
+                            "d12n03": {
+                                "type": "long"
+                            },
+                            "d12n02": {
+                                "type": "long"
+                            },
+                            "d12n07": {
+                                "type": "long"
+                            },
+                            "cpn-p27-10-02": {
+                                "type": "long"
+                            },
+                            "cpn-p28-38": {
+                                "type": "long"
+                            },
+                            "cpn-p28-39": {
+                                "type": "long"
+                            },
+                            "cpn-p28-36": {
+                                "type": "long"
+                            },
+                            "cpn-p28-37": {
+                                "type": "long"
+                            },
+                            "cpn-p27-08-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d12-07%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d11-12%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-28%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-15%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-07%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d12-10%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-08-02": {
+                                "type": "long"
+                            },
+                            "d11n04": {
+                                "type": "long"
+                            },
+                            "cpn-f15-23%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n23": {
+                                "type": "long"
+                            },
+                            "f15n29": {
+                                "type": "long"
+                            },
+                            "f15n14": {
+                                "type": "long"
+                            },
+                            "f15n27": {
+                                "type": "long"
+                            },
+                            "f15n24": {
+                                "type": "long"
+                            },
+                            "f15n25": {
+                                "type": "long"
+                            },
+                            "f15n28": {
+                                "type": "long"
+                            },
+                            "cpn-d11-13%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-06%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-17%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-12%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-16%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-31%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-15-02": {
+                                "type": "long"
+                            },
+                            "cpn-f11-15-01": {
+                                "type": "long"
+                            },
+                            "cpn-f11-18-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-07-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-20-02": {
+                                "type": "long"
+                            },
+                            "cpn-f11-21-02": {
+                                "type": "long"
+                            },
+                            "f15n31": {
+                                "type": "long"
+                            },
+                            "f15n30": {
+                                "type": "long"
+                            },
+                            "f15n33": {
+                                "type": "long"
+                            },
+                            "f15n32": {
+                                "type": "long"
+                            },
+                            "f15n35": {
+                                "type": "long"
+                            },
+                            "cpn-d11-19%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n37": {
+                                "type": "long"
+                            },
+                            "f15n36": {
+                                "type": "long"
+                            },
+                            "f15n39": {
+                                "type": "long"
+                            },
+                            "f15n38": {
+                                "type": "long"
+                            },
+                            "cpn-d12-15%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-11-01": {
+                                "type": "long"
+                            },
+                            "d11n08": {
+                                "type": "long"
+                            },
+                            "d11n09": {
+                                "type": "long"
+                            },
+                            "cpn-f11-17-01": {
+                                "type": "long"
+                            },
+                            "cpn-f15-05%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-17-02": {
+                                "type": "long"
+                            },
+                            "d11n02": {
+                                "type": "long"
+                            },
+                            "d11n03": {
+                                "type": "long"
+                            },
+                            "d11n01": {
+                                "type": "long"
+                            },
+                            "d11n06": {
+                                "type": "long"
+                            },
+                            "d11n07": {
+                                "type": "long"
+                            },
+                            "cpn-p27-10-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "d11n05": {
+                                "type": "long"
+                            },
+                            "cpn-f11-14-01": {
+                                "type": "long"
+                            },
+                            "cpn-f11-14-02": {
+                                "type": "long"
+                            },
+                            "cpn-d12-11%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-27%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-10-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-09%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-32%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d11-11%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n08": {
+                                "type": "long"
+                            },
+                            "cpn-f15-08%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
                             "nested_list": {
                                 "type": "nested"
+                            },
+                            "f15n04": {
+                                "type": "long"
+                            },
+                            "f15n05": {
+                                "type": "long"
+                            },
+                            "f15n06": {
+                                "type": "long"
+                            },
+                            "f15n07": {
+                                "type": "long"
+                            },
+                            "f15n03": {
+                                "type": "long"
+                            },
+                            "d11n19": {
+                                "type": "long"
+                            },
+                            "d11n18": {
+                                "type": "long"
+                            },
+                            "cpn-d12-14%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "d11n11": {
+                                "type": "long"
+                            },
+                            "d11n10": {
+                                "type": "long"
+                            },
+                            "cpn-f11-17-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "d11n12": {
+                                "type": "long"
+                            },
+                            "d11n17": {
+                                "type": "long"
+                            },
+                            "cpn-p27-08-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p28-40": {
+                                "type": "long"
+                            },
+                            "cpn-f11-18-01": {
+                                "type": "long"
+                            },
+                            "cpn-f11-16-02": {
+                                "type": "long"
+                            },
+                            "cpn-p27-09-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-16-01": {
+                                "type": "long"
+                            },
+                            "cpn-p27-07-01": {
+                                "type": "long"
+                            },
+                            "cpn-p27-07-02": {
+                                "type": "long"
+                            },
+                            "cpn-f15-10%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n18": {
+                                "type": "long"
+                            },
+                            "d11n20": {
+                                "type": "long"
+                            },
+                            "f15n13": {
+                                "type": "long"
+                            },
+                            "f15n12": {
+                                "type": "long"
+                            },
+                            "f15n11": {
+                                "type": "long"
+                            },
+                            "f15n10": {
+                                "type": "long"
+                            },
+                            "f15n17": {
+                                "type": "long"
+                            },
+                            "f15n16": {
+                                "type": "long"
+                            },
+                            "f15n15": {
+                                "type": "long"
+                            },
+                            "cpn-d11-17%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d11-20%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-18-02": {
+                                "type": "long"
+                            },
+                            "cpn-d11-09%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-30%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "f15n09": {
+                                "type": "long"
+                            },
+                            "cpn-d12-05%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-18-02%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d12-06%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f15-11%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-21-01": {
+                                "type": "long"
+                            },
+                            "cpn-d11-10%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-11-02": {
+                                "type": "long"
+                            },
+                            "cpn-f15-24%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-12-02": {
+                                "type": "long"
+                            },
+                            "cpn-p27-12-01": {
+                                "type": "long"
+                            },
+                            "cpn-d12-09%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-p27-08-01": {
+                                "type": "long"
+                            },
+                            "cpn-d11-18%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-d11-01%2ecbls%2eccr%2ebuffalo%2eedu": {
+                                "type": "long"
+                            },
+                            "cpn-f11-19-01": {
+                                "type": "long"
                             }
                         }
                     },
@@ -2677,8 +3100,47 @@
                     },
                     "hostdata": {
                         "properties": {
+                            "11": {
+                                "type": "float"
+                            },
+                            "13": {
+                                "type": "float"
+                            },
+                            "12": {
+                                "type": "float"
+                            },
                             "nested_list": {
                                 "type": "nested"
+                            },
+                            "1": {
+                                "type": "float"
+                            },
+                            "0": {
+                                "type": "float"
+                            },
+                            "3": {
+                                "type": "float"
+                            },
+                            "2": {
+                                "type": "float"
+                            },
+                            "5": {
+                                "type": "float"
+                            },
+                            "4": {
+                                "type": "float"
+                            },
+                            "7": {
+                                "type": "float"
+                            },
+                            "6": {
+                                "type": "float"
+                            },
+                            "9": {
+                                "type": "float"
+                            },
+                            "8": {
+                                "type": "float"
                             }
                         }
                     },
@@ -2690,7 +3152,142 @@
             "network": {
                 "properties": {
                     "nested_list": {
-                        "type": "nested"
+                        "type": "nested",
+                        "properties": {
+                            "_key": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            },
+                            "out-packets": {
+                                "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "cov": {
+                                        "type": "float"
+                                    },
+                                    "max": {
+                                        "type": "float"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-packets": {
+                                "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "cov": {
+                                        "type": "float"
+                                    },
+                                    "max": {
+                                        "type": "float"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "out-bytes": {
+                                "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "cov": {
+                                        "type": "float"
+                                    },
+                                    "max": {
+                                        "type": "float"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            },
+                            "in-bytes": {
+                                "properties": {
+                                    "std": {
+                                        "type": "float"
+                                    },
+                                    "med": {
+                                        "type": "float"
+                                    },
+                                    "cnt": {
+                                        "type": "long"
+                                    },
+                                    "cov": {
+                                        "type": "float"
+                                    },
+                                    "max": {
+                                        "type": "float"
+                                    },
+                                    "min": {
+                                        "type": "float"
+                                    },
+                                    "skw": {
+                                        "type": "float"
+                                    },
+                                    "krt": {
+                                        "type": "float"
+                                    },
+                                    "avg": {
+                                        "type": "float"
+                                    }
+                                }
+                            }
+                        }
                     },
                     "error": {
                         "type": "keyword"
@@ -4903,7 +5500,167 @@
             "processed": {
                 "properties": {
                     "nested_list": {
-                        "type": "nested"
+                        "type": "nested",
+                        "properties": {
+                            "errors": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            },
+                            "warnings": {
+                                "properties": {
+                                    "catastrophe": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpu_idle": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpiref": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpu_user": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpu_system": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "cpu_user_imbalance": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "node_cpu_idle": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    }
+                                }
+                            },
+                            "_key": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            },
+                            "ts": {
+                                "type": "float"
+                            },
+                            "ccr": {
+                                "properties": {
+                                    "xdmod": {
+                                        "properties": {
+                                            "org": {
+                                                "properties": {
+                                                    "errors": {
+                                                        "fields": {
+                                                            "keyword": {
+                                                                "ignore_above": 256,
+                                                                "type": "keyword"
+                                                            }
+                                                        },
+                                                        "type": "text"
+                                                    },
+                                                    "ts": {
+                                                        "type": "float"
+                                                    },
+                                                    "version": {
+                                                        "type": "long"
+                                                    },
+                                                    "warnings": {
+                                                        "properties": {
+                                                            "cpu_system": {
+                                                                "fields": {
+                                                                    "keyword": {
+                                                                        "ignore_above": 256,
+                                                                        "type": "keyword"
+                                                                    }
+                                                                },
+                                                                "type": "text"
+                                                            },
+                                                            "cpu_user": {
+                                                                "fields": {
+                                                                    "keyword": {
+                                                                        "ignore_above": 256,
+                                                                        "type": "keyword"
+                                                                    }
+                                                                },
+                                                                "type": "text"
+                                                            },
+                                                            "cpu_user_imbalance": {
+                                                                "fields": {
+                                                                    "keyword": {
+                                                                        "ignore_above": 256,
+                                                                        "type": "keyword"
+                                                                    }
+                                                                },
+                                                                "type": "text"
+                                                            },
+                                                            "cpu_idle": {
+                                                                "fields": {
+                                                                    "keyword": {
+                                                                        "ignore_above": 256,
+                                                                        "type": "keyword"
+                                                                    }
+                                                                },
+                                                                "type": "text"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "version": {
+                                "type": "long"
+                            }
+                        }
                     }
                 }
             },
@@ -5012,7 +5769,7 @@
                                 }
                             },
                             "error": {
-                                "type": "flattened"
+                                "type": "text"
                             },
                             "system": {
                                 "properties": {

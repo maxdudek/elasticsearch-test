@@ -8,6 +8,8 @@ import datetime
 import time
 import math
 
+# Important: in order to ensure that acct.resource_id is set correctly, files must 
+# be named according to their resource - ex. 'resource_8.bson.gz'
 
 HOSTNAME = '172.22.0.41'
 INDEX = 'jobs-index'
@@ -22,7 +24,7 @@ MATCH_ALL = { 'query': {'match_all': {}} }
 
 # Path to gziped bson documents
 DATA_PATH = '/data/documents'
-DATA_PATH = '/data/documents/subset'
+# DATA_PATH = '/data/documents/subset'  # For testing
 
 # Configuration files
 MAPPING_FILE = 'mapping.json'
@@ -31,10 +33,18 @@ SETTINGS_FILE = 'index_settings.json'
 # See consolidateNestedFields()
 NESTED_FIELDS = [
     'network',
-    'procDump.cpusallowed',     # should this just be flattened?
+    'procDump.cpusallowed',     # should this just be mapped to the 'flattened' type?
     'processed',
     'timeseries.hostdata',
     'timeseries.hostmap',
+]
+
+# See flattenFields - these fields get converted to strings (in case they contain objects)
+FIELDS_TO_FLATTEN = [
+    'errors',
+    'cpu.jobcpus.error',
+    'gpu.error',
+    'procDump.error',
 ]
 
 # Map filenames to resource names
@@ -65,8 +75,6 @@ def loadJson(filename):
     with open(filename, 'r') as inFile:
         return json.load(inFile)
 
-
-
 def transformDoc(doc, filename, bulk=True):
     global OP_TYPE
 
@@ -74,8 +82,10 @@ def transformDoc(doc, filename, bulk=True):
     if '_id' in doc:
         doc['id'] = doc['_id']
         del doc['_id']
+
+    if bulk:
+        doc['_id'] = getDocId(doc, filename)
     
-   
     if 'acct' in doc:
          # Turn list into object
         if 'hostcores' in doc['acct']:
@@ -85,14 +95,15 @@ def transformDoc(doc, filename, bulk=True):
                 if h['value'] == ['error']:
                     h['value'] = [-1]
         # Timelimit should always be a number
-        if 'timelimit' in doc['acct'] and isinstance(doc['acct']['timelimit'], str):
+        # TODO: when transitioning to Python 3, change 'basestring' --> 'str'
+        if 'timelimit' in doc['acct'] and isinstance(doc['acct']['timelimit'], basestring):
             if ':' in doc['acct']['timelimit']:
                 doc['acct']['timelimit'] = timeToSeconds(doc['acct']['timelimit'])
             else:
-                # TODO
                 doc['acct']['timelimit'] = 0
         # Ensure resource_id is set correctly, from the filename
-        doc['resource_id'] = int(filename.split('/')[-1].split('.')[0].split('resource_')[-1])
+        doc['acct']['resource_id'] = int(filename.split('/')[-1].split('.')[0].split('resource_')[-1])
+        # TODO - transform acct.reqmem into a number?
     
     if bulk:
         doc['_index'] = INDEX
@@ -104,10 +115,28 @@ def transformDoc(doc, filename, bulk=True):
 
     consolidateNestedFields(doc)
 
-    # Probably obsolete
-    # flattenErrors(doc)    
+    flattenFields(doc)    
 
     return doc
+
+def removeInvalidValues(v):
+    """ Recursively remove invalid values like NaN and Infinity
+        Returns true if the value should be deleted """
+    if isinstance(v, dict):
+        for key, value in v.items():
+            if removeInvalidValues(value):
+                del v[key]
+        return False
+    elif isinstance(v, list):
+        for i in range(len(v) - 1, -1, -1):
+            if removeInvalidValues(v[i]):
+                del v[i]
+        return False
+    else:
+        # Check if value is invalid
+        if type(v) == float:
+            return math.isnan(v) or math.isinf(v)
+        return False
 
 # For every field in NESTED_FIELDS, replaces the 
 # contents of that field with a list instead of an object,
@@ -148,39 +177,40 @@ def timeToSeconds(timeString):
     try:
         x = time.strptime(timeString,'%H:%M:%S')
     except ValueError as e:
+        # TODO: Sometimes doc['acct']['timelimit'] = '125-00:00:00', what does this mean?
         return 0
     return int(datetime.timedelta(hours=x.tm_hour,minutes=x.tm_min,seconds=x.tm_sec).total_seconds())
 
-def removeInvalidValues(v):
-    """ Recursively remove invalid values like NaN and Infinity
-        Returns true if the value should be deleted """
-    if isinstance(v, dict):
-        for key, value in v.items():
-            if removeInvalidValues(value):
-                del v[key]
-        return False
-    elif isinstance(v, list):
-        for i in range(len(v) - 1, -1, -1):
-            if removeInvalidValues(v[i]):
-                del v[i]
-        return False
-    else:
-        # Check if value is invalid
-        if type(v) == float:
-            return math.isnan(v) or math.isinf(v)
-        return False
+# Obsolete - use flattenFields()
+# ERRORS_TO_FLATTEN = ['errors', 'error']
+# def flattenErrors(v):
+#     """ Recurrsively flatten fields labeled 'errors' into strings """
+#     if isinstance(v, dict):
+#         for key in v:
+#             flattenErrors(v[key])
+#         for fieldname in ERRORS_TO_FLATTEN:
+#             if fieldname in v:
+#                 v[fieldname] = json.dumps(v[fieldname])
+#     if isinstance(v, list):
+#         for item in v:
+#             flattenErrors(item)
 
-# Probably obsolete - use elasticsearch mapping 'flattened' for errors
-def flattenErrors(v):
-    """ Recurrsively flatten fields labeled 'errors' into strings """
-    if isinstance(v, dict):
-        for key in v:
-            flattenErrors(v[key])
-        if 'errors' in v:
-            v['errors'] = str(v['errors'])
-    if isinstance(v, list):
-        for item in v:
-            flattenErrors(item)
+def flattenFields(doc):
+    """
+    Convert the fields in FIELDS_TO_FLATTEN into strings (because sometimes they're objects)
+    """
+    for field in FIELDS_TO_FLATTEN:
+        innerObject = doc
+
+        subfields = field.split('.')
+
+        # get inner object in document
+        try:
+            for subfield in subfields[:-1]:
+                innerObject = innerObject[subfield]
+            innerObject[subfields[-1]] = json.dumps(innerObject[subfields[-1]])
+        except KeyError:
+            continue # If the doc doesn't contain the current field
 
 def getFilesInDirectory(path, extension='bson.gz'):
     """ Recursively fetches a list of file paths with 
@@ -193,6 +223,7 @@ def getFilesInDirectory(path, extension='bson.gz'):
                 files.append(os.path.join(r, filename))
     return files
 
+# Not used anymore - only for testing a small amount of files
 def jsonIter(files, bulk=True):
     """ An iterator used for bulk ingest """
     for f in files:
@@ -210,11 +241,9 @@ def bsonIter(files, bulk=True):
         print('Opening file ' + file)
         for doc in stream:
             doc = transformDoc(doc, filename=file, bulk=bulk)
-            if bulk:
-                doc['_id'] = getDocId(doc, file)
 
             count += 1
-            if count % 1000 == 0:
+            if count % 10000 == 0:
                 print('Ingested ' + str(count) + ' docs')
             
             yield doc
@@ -235,17 +264,20 @@ def bulkIngest(es, dataPath):
     global OP_TYPE
 
     dataFiles = getFilesInDirectory(dataPath)
-    print(dataFiles)
+    print('Files to be ingested = ' + str(dataFiles))
     errors = []
 
     # Bulk ingest
-    print('\nBulk ingest...')
+    print('\nBeginning bulk ingest...')
     startTime = time.time()
     # See https://elasticsearch-py.readthedocs.io/en/master/helpers.html 
     for _, error in helpers.streaming_bulk(es, bsonIter(dataFiles, bulk=True), yield_ok=False, raise_on_error=False):
     # for _, error in helpers.parallel_bulk(es, bsonIter(dataFiles, bulk=True), raise_on_error=False):
         if 'version conflict' not in error[OP_TYPE]['error']['reason']: # Ignore duplicate ID error
             errors.append(error)
+            if len(errors) % 500 == 0:
+                print('Number of errors: ' + str(len(errors)))
+                print('Current error reason: ' + json.dumps(error[OP_TYPE]['error']['reason'], indent=4))
 
     timeTaken = time.time() - startTime
     print('Bulk ingest time: ' + str(timeTaken / 3600.0) + ' hours.')

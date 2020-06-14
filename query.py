@@ -4,6 +4,8 @@ import json
 
 INDEX = 'jobs-index'
 
+LOG_FILE = 'queries.log'
+
 # Create a connection to the server
 es = Elasticsearch(hosts=['172.22.0.41'], timeout=30)
 
@@ -27,7 +29,7 @@ def query(body, queryType='sql'):
     timeTaken = time() - startTime
 
     # Output results to log file
-    with open('queries.log', 'a') as log:
+    with open(LOG_FILE, 'a') as log:
         logInfo = {}
         logInfo['time'] = strftime('%Y-%m-%d %H:%M:%S')
         logInfo['body'] = body
@@ -60,6 +62,23 @@ dslExample = {
     }
 }
 
+# Example Nested DSL Query
+nestedQuery = {
+    "query":  {
+        "nested" : {
+            "path" : "network.nested_list",
+            "query" : {
+                "bool" : {
+                    "must" : [
+                    { "match" : {"network.nested_list._key" : "lo"} },
+                    { "range" : {"network.nested_list.out-bytes.avg" : {"gt" : 1000000}} }
+                    ]
+                }
+            }
+        }
+    }
+}
+
 # Example SQL query
 sqlExample = 'SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" WHERE acct.ncpus = 16'
 
@@ -82,11 +101,14 @@ acct.exit_status = 'COMPLETED' AND
 DATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND
 "cpu.nodecpus.all.cnt" - "cpu.jobcpus.all.cnt" = 0
 """
+sqlExampleQuote = 'SELECT AVG("cpu.nodecpus.user.avg"), COUNT(*) FROM "jobs-index" WHERE "acct.ncpus" = 16'
 
 
 
 # SQL queries can only be run when queryType == 'sql'
 clearCache()
-query(joeQuery, queryType='sql')
+# query(sqlExample, queryType='sql')
+query(nestedQuery, queryType='count')
+
 
 # Test Comment 2
