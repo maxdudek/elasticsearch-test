@@ -3,7 +3,21 @@
         "index": {
             "mapping.total_fields.limit": 10000,
             "number_of_replicas": "1",
-            "number_of_shards": "1"
+            "number_of_shards": "3"
+        },
+        "analysis": {
+            "analyzer": {
+              "errors_analyzer": {
+                "tokenizer": "errors_tokenizer"
+              }
+            },
+            "tokenizer": {
+              "errors_tokenizer": {
+                "type": "pattern",
+                "pattern": "\\{|\\}|\\[|\\]|\"|'|\\\\|:|,|(cpn-...-..)|(for \\s pid \\s \\d+)"
+              }
+            }
+          }
         }
     }
 }
