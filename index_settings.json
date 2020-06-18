@@ -7,17 +7,58 @@
         },
         "analysis": {
             "analyzer": {
-              "errors_analyzer": {
-                "tokenizer": "errors_tokenizer"
-              }
+                "errors_analyzer": {
+                    "tokenizer": "errors_tokenizer",
+                    "char_filter": [
+                        "hostname_char_filter",
+                        "pid_char_filter",
+                        "erase_char_filter"
+                    ],
+                    "filter": [
+                        "length_filter"
+                    ]
+                }
+            },
+            "char_filter": {
+                "hostname_char_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "cpn-...-..(-..)?",
+                    "replacement": ""
+                },
+                "pid_char_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "for pid \\d+",
+                    "replacement": "for pid xxxxx"
+                },
+                "timestamp_char_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "timestamp \\d+\\.\\d+",
+                    "replacement": "timestamp xxxxxxxxxx"
+                },
+                "erase_char_filter": {
+                    "type": "pattern_replace",
+                    "pattern": "(f|d)\\d\\dn\\d\\d",
+                    "replacement": ""
+                }
             },
             "tokenizer": {
-              "errors_tokenizer": {
-                "type": "pattern",
-                "pattern": "\\{|\\}|\\[|\\]|\"|'|\\\\|:|,|(cpn-...-..)|(for \\s pid \\s \\d+)"
-              }
+                "errors_tokenizer": {
+                    "type": "pattern",
+                    "pattern": "\\{|\\}|\\[|\\]|\"|'|(\\\\n)|\\\\|:|,"
+                },
+                "comma_tokenizer": {
+                    "type": "pattern",
+                    "pattern": ","
+                }
+            },
+            "filter" : {
+                "length_filter" : {
+                    "type" : "predicate_token_filter",
+                    "script" : {
+                        "source" : "token.getTerm().length() > 2"  
+                    }
+                }
             }
-          }
         }
     }
 }
