@@ -107,8 +107,8 @@ sqlExampleQuote = 'SELECT AVG("cpu.nodecpus.user.avg"), COUNT(*) FROM "jobs-inde
 
 # SQL queries can only be run when queryType == 'sql'
 clearCache()
-# query(sqlExample, queryType='sql')
-query(nestedQuery, queryType='count')
+query(joeQuery, queryType='sql')
+# query(nestedQuery, queryType='count')
 
 
 # Test Comment 2

@@ -42,7 +42,7 @@ NESTED_FIELDS = [
 
 # See deleteFields() - these fields get removed from docs
 FIELDS_TO_DELETE = [
-    'processed',
+    'processed',        # Complicated nested field that for some reason created hundreds of fields
 ]
 
 # See flattenFields - these fields get converted to strings (in case they contain objects)
@@ -109,9 +109,8 @@ def transformDoc(doc, filename, bulk=True):
                 doc['acct']['timelimit'] = 0
         # Ensure resource_id is set correctly, from the filename
         doc['acct']['resource_id'] = int(filename.split('/')[-1].split('.')[0].split('resource_')[-1])
-        # TODO parse reqmem 
-        # if 'reqmem' in doc['acct']:
-        #     doc['acct']['reqmem'] = parseReqmem(doc['acct']['reqmem'])
+        if 'reqmem' in doc['acct']:
+            doc['acct']['reqmem'] = parseReqmem(doc['acct']['reqmem'])
     
     if bulk:
         doc['_index'] = INDEX
@@ -188,8 +187,9 @@ def consolidateNestedFields(doc):
         listToAdd = []
         for key in innerObject:
             value = innerObject[key]
-            if isinstance(value, dict) and 'error' not in key:
-                # If the object is not a flat value, and not an error
+            if 'error' not in key:
+                if not isinstance(value, dict):
+                    value = {"_value": value} # If the value is not an object, turn it into one
                 value['_key'] = key
                 listToAdd.append(value)
         

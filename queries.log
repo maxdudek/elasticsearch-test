@@ -2195,3 +2195,23 @@ Format of log entries:
     "queryTime": 0.39231181144714355, 
     "time": "2020-06-12 20:31:49"
 }
+
+{
+    "body": "\nSELECT COUNT (*)\nFROM \"jobs-index\"\nWHERE \nacct.end_time >= '2019-01-01'::datetime AND\n\"cpu.effcpus.all\" = 1 AND\nacct.ncpus > 1 AND\ncpu.effcpus.user.avg > 0.9 AND\nacct.exit_status = 'COMPLETED' AND\nDATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND\n\"cpu.nodecpus.all.cnt\" - \"cpu.jobcpus.all.cnt\" = 0\n", 
+    "type": "sql", 
+    "result": {
+        "rows": [
+            [
+                719
+            ]
+        ], 
+        "columns": [
+            {
+                "type": "long", 
+                "name": "COUNT (*)"
+            }
+        ]
+    }, 
+    "queryTime": 6.648464918136597, 
+    "time": "2020-06-19 15:35:01"
+}
