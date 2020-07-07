@@ -1,0 +1,18 @@
+{
+    "index_name": "tacc-stats",
+    "op_type": "create",
+    "data_path": "/data/tacc-stats",
+    "transform_function": "transformDocTaccStats",
+    "nested_fields": [
+        
+    ],
+    "fields_to_delete": [
+        
+    ],
+    "fields_to_flatten": [
+        
+    ],
+    "resource_names": {
+        
+    }
+}

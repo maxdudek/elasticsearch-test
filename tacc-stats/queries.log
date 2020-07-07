@@ -1,0 +1,9 @@
+Format of log entries:
+
+{
+    "body": "The json body of the query",
+    "result": "The json retured by the query",
+    "queryTime": "Time in seconds taken to run the query",
+    "time": "When the query was run",
+    "type": "The type of query run (count, search, or sql)"
+}

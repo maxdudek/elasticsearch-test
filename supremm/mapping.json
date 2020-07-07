@@ -642,6 +642,22 @@
                     "group": {
                         "type": "keyword"
                     },
+                    "reqmem": {
+                        "properties": {
+                            "type": {
+                                "fields": {
+                                    "keyword": {
+                                        "ignore_above": 256,
+                                        "type": "keyword"
+                                    }
+                                },
+                                "type": "text"
+                            },
+                            "megabytes": {
+                                "type": "long"
+                            }
+                        }
+                    },
                     "eligible": {
                         "type": "keyword"
                     },
@@ -1946,6 +1962,15 @@
                                         },
                                         "type": "text"
                                     },
+                                    "_value": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
                                     "node": {
                                         "fields": {
                                             "keyword": {
@@ -2606,7 +2631,21 @@
                     "hostmap": {
                         "properties": {
                             "nested_list": {
-                                "type": "nested"
+                                "type": "nested",
+                                "properties": {
+                                    "_key": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "_value": {
+                                        "type": "long"
+                                    }
+                                }
                             }
                         }
                     },
@@ -2616,7 +2655,21 @@
                     "hostdata": {
                         "properties": {
                             "nested_list": {
-                                "type": "nested"
+                                "type": "nested",
+                                "properties": {
+                                    "_key": {
+                                        "fields": {
+                                            "keyword": {
+                                                "ignore_above": 256,
+                                                "type": "keyword"
+                                            }
+                                        },
+                                        "type": "text"
+                                    },
+                                    "_value": {
+                                        "type": "float"
+                                    }
+                                }
                             }
                         }
                     },

@@ -1,0 +1,32 @@
+{
+    "index_name": "jobs-index",
+    "op_type": "create",
+    "data_path": "/data/documents",
+    "transform_function": "transformDocSupremm",
+    "nested_fields": [
+        "nfs",
+        "procDump.cpusallowed",
+        "processed",
+        "timeseries.hostdata",
+        "timeseries.hostmap"
+    ],
+    "fields_to_delete": [
+        "processed"
+    ],
+    "fields_to_flatten": [
+        "errors",
+        "cpu.jobcpus.error",
+        "gpu.error",
+        "procDump.error"
+    ],
+    "resource_names": {
+        "resource_8": "chemistry",
+        "resource_9": "industry",
+        "resource_10": "mae",
+        "resource_11": "physics",
+        "resource_13": "ub-hpc",
+        "resource_2909": "faculty",
+        "resource_14": "alpha",
+        "resource_15": "bravo"
+    }
+}

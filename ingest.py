@@ -12,63 +12,10 @@ import math
 # be named according to their resource - ex. 'resource_8.bson.gz'
 
 HOSTNAME = '172.22.0.41'
-INDEX = 'jobs-index'
 
-# If _op_type == 'create', bulk ingest will not re-index documents already in the index
-# If _op_type == 'index', all documents will be reindexed
-# See https://elasticsearch-py.readthedocs.io/en/master/helpers.html
-OP_TYPE = 'create'
-
-# A query body which matches all documents (used for counting total number of documents)
-MATCH_ALL = { 'query': {'match_all': {}} }
-
-# Path to gziped bson documents
-DATA_PATH = '/data/documents'
-# DATA_PATH = '/data/documents/subset'  # For testing
-
-# Configuration files
-MAPPING_FILE = 'mapping.json'
-SETTINGS_FILE = 'index_settings.json'
-
-# See consolidateNestedFields()
-NESTED_FIELDS = [
-    'network',
-    'nfs',
-    'procDump.cpusallowed',     # should this just be mapped to the 'flattened' type?
-    'processed',
-    'timeseries.hostdata',
-    'timeseries.hostmap',
-]
-
-# See deleteFields() - these fields get removed from docs
-FIELDS_TO_DELETE = [
-    'processed',        # Complicated nested field that for some reason created hundreds of fields
-]
-
-# See flattenFields - these fields get converted to strings (in case they contain objects)
-FIELDS_TO_FLATTEN = [
-    'errors',
-    'cpu.jobcpus.error',
-    'gpu.error',
-    'procDump.error',
-]
-
-# Map filenames to resource names
-RESOURCE_NAMES = {
-    'resource_8': 'chemistry',
-    'resource_9': 'industry',
-    'resource_10': 'mae',
-    'resource_11': 'physics',
-    'resource_13': 'ub-hpc',
-    'resource_2909': 'faculty',
-    'resource_14': 'alpha',
-    'resource_15': 'bravo',
-}
-
-# Object to be loaded with mapping and settings when index is created
-INDEX_BODY = {}
-
-count = 0
+# SWITCH based on which index you want to ingest into
+# DIRECTORY = 'supremm'
+DIRECTORY = 'tacc-stats'
 
 def printJson(j):
     print(json.dumps(j, indent=4))
@@ -81,7 +28,44 @@ def loadJson(filename):
     with open(filename, 'r') as inFile:
         return json.load(inFile)
 
-def transformDoc(doc, filename, bulk=True):
+INGEST_CONFIG = loadJson(DIRECTORY + '/' + 'ingest_config.json')
+
+INDEX = INGEST_CONFIG['index_name']
+
+# If _op_type == 'create', bulk ingest will not re-index documents already in the index
+# If _op_type == 'index', all documents will be reindexed
+# See https://elasticsearch-py.readthedocs.io/en/master/helpers.html
+OP_TYPE = INGEST_CONFIG['op_type']
+
+# Path to gziped bson documents
+DATA_PATH = INGEST_CONFIG['data_path']
+
+TRANSFORM_FUNCTION = INGEST_CONFIG['transform_function']
+
+# See consolidateNestedFields()
+NESTED_FIELDS = INGEST_CONFIG['nested_fields']
+
+# See deleteFields() - these fields get removed from docs
+FIELDS_TO_DELETE = INGEST_CONFIG['fields_to_delete']
+
+# See flattenFields - these fields get converted to strings (in case they contain objects)
+FIELDS_TO_FLATTEN = INGEST_CONFIG['fields_to_flatten']
+
+# Map filenames to resource names
+RESOURCE_NAMES = INGEST_CONFIG['resource_names']
+
+# Object to be loaded with mapping and settings when index is created
+INDEX_BODY = {}
+# Configuration files
+MAPPING_FILE = DIRECTORY + '/' + 'mapping.json'
+SETTINGS_FILE = DIRECTORY + '/' + 'index_settings.json'
+
+# A query body which matches all documents (used for counting total number of documents)
+MATCH_ALL = { 'query': {'match_all': {}} }
+
+count = 0
+
+def transformDocSupremm(doc, filename, bulk=True):
     global OP_TYPE
 
     # Change key name to prevent naming conflict
@@ -111,22 +95,30 @@ def transformDoc(doc, filename, bulk=True):
         doc['acct']['resource_id'] = int(filename.split('/')[-1].split('.')[0].split('resource_')[-1])
         if 'reqmem' in doc['acct']:
             doc['acct']['reqmem'] = parseReqmem(doc['acct']['reqmem'])
-    
-    if bulk:
-        doc['_index'] = INDEX
-        
-        doc['_op_type'] = OP_TYPE
+   
+    return doc
 
-    deleteFields(doc)
+def transformDocTaccStats(doc, filename, bulk=True):
 
-    removeInvalidValues(doc)
-
-    consolidateNestedFields(doc)
-
-    flattenFields(doc)    
+    # Change key name to prevent naming conflict
+    if not bulk and '_id' in doc:
+        doc['id'] = doc['_id']
+        del doc['_id']
 
     return doc
 
+# Universal transform function
+def transformDoc(doc, filename, bulk=True):
+    if bulk:
+        doc['_index'] = INDEX
+        doc['_op_type'] = OP_TYPE
+
+    deleteFields(doc)
+    removeInvalidValues(doc)
+    consolidateNestedFields(doc)
+    flattenFields(doc)    
+
+    return doc
 
 def deleteFields(doc):
     """
@@ -213,18 +205,21 @@ def parseReqmem(reqmem):
         "type": "c"
     }
     """
-    result = {}
-    result['type'] = reqmem[-1]
-    units = reqmem[-2]
-    quantity = float(reqmem[:-2])
-    if (units == 'K'):
-        result['megabytes'] = int(round((quantity / 1024)))
-    elif (units == 'M'):
-        result['megabytes'] = int(round(quantity))
-    elif (units == 'G'):
-        result['megabytes'] = int(round(quantity * 1024))
-    elif (units == 'T'):
-        result['megabytes'] = int(round(quantity * 1024 * 1024))
+    try:
+        result = {}
+        result['type'] = reqmem[-1]
+        units = reqmem[-2]
+        quantity = float(reqmem[:-2])
+        if (units == 'K'):
+            result['megabytes'] = int(round((quantity / 1024)))
+        elif (units == 'M'):
+            result['megabytes'] = int(round(quantity))
+        elif (units == 'G'):
+            result['megabytes'] = int(round(quantity * 1024))
+        elif (units == 'T'):
+            result['megabytes'] = int(round(quantity * 1024 * 1024))
+    except Exception:
+        return {'type': reqmem, 'megabytes': 0}
     return result
 
 def timeToSeconds(timeString):
@@ -309,10 +304,11 @@ def bsonIter(files, bulk=True):
         stream = KeyValueBSONInput(fh=f)
         print('Opening file ' + file)
         for doc in stream:
-            doc = transformDoc(doc, filename=file, bulk=bulk)
+            doc = eval(TRANSFORM_FUNCTION + '(doc, filename=file, bulk=bulk)') # index-specific transform function
+            doc = transformDoc(doc, filename=file, bulk=bulk)                 # universal transform function
 
             count += 1
-            if count % 10000 == 0:
+            if count % 500 == 0:
                 print('Ingested ' + str(count) + ' docs')
             
             yield doc
@@ -350,7 +346,7 @@ def bulkIngest(es, dataPath):
 
     timeTaken = time.time() - startTime
     print('Bulk ingest time: ' + str(timeTaken / 3600.0) + ' hours.')
-    writeJson(errors, 'bulk_errors.json')
+    writeJson(errors, DIRECTORY + '/' + 'bulk_errors.json')
 
 def prep(es):
     """ Displays health info, DELETES AND RECREATES INDEX """
@@ -383,4 +379,4 @@ if __name__ == '__main__':
     bulkIngest(es, DATA_PATH)                                       # Ingest data
 
     # Write mapping to file (Could change if autogenerated fields are added)
-    writeJson(es.indices.get_mapping(index=INDEX)[INDEX], 'mapping.json')
+    writeJson(es.indices.get_mapping(index=INDEX)[INDEX], MAPPING_FILE)
