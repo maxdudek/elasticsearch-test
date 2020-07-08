@@ -4,13 +4,15 @@
     "data_path": "/data/tacc-stats",
     "transform_function": "transformDocTaccStats",
     "nested_fields": [
-        
+        "intel_bdw_cbo",
+        "timedata",
+        "tmpfs"
     ],
     "fields_to_delete": [
         
     ],
     "fields_to_flatten": [
-        
+        "processed.e2428285-41df-11ea-8c88-fa163e7951c3.errors"
     ],
     "resource_names": {
         

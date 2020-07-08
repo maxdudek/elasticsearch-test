@@ -2,7 +2,7 @@
     "index_name": "jobs-index",
     "op_type": "create",
     "data_path": "/data/documents",
-    "transform_function": "transformDocSupremm",
+    "transform_function": "transformDocCcr",
     "nested_fields": [
         "nfs",
         "procDump.cpusallowed",

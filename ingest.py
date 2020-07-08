@@ -14,7 +14,7 @@ import math
 HOSTNAME = '172.22.0.41'
 
 # SWITCH based on which index you want to ingest into
-# DIRECTORY = 'supremm'
+# DIRECTORY = 'ccr'
 DIRECTORY = 'tacc-stats'
 
 def printJson(j):
@@ -65,9 +65,7 @@ MATCH_ALL = { 'query': {'match_all': {}} }
 
 count = 0
 
-def transformDocSupremm(doc, filename, bulk=True):
-    global OP_TYPE
-
+def transformDocCcr(doc, filename, bulk=True):
     # Change key name to prevent naming conflict
     if '_id' in doc:
         doc['id'] = doc['_id']
@@ -104,6 +102,19 @@ def transformDocTaccStats(doc, filename, bulk=True):
     if not bulk and '_id' in doc:
         doc['id'] = doc['_id']
         del doc['_id']
+
+    if 'acct' in doc:
+        # TODO: when transitioning to Python 3, change 'basestring' --> 'str'
+        if 'timelimit' in doc['acct'] and isinstance(doc['acct']['timelimit'], basestring):
+            if ':' in doc['acct']['timelimit']:
+                doc['acct']['timelimit'] = timeToSeconds(doc['acct']['timelimit'])
+            else:
+                doc['acct']['timelimit'] = 0
+        if 'elapsed' in doc['acct'] and isinstance(doc['acct']['elapsed'], basestring):
+            if ':' in doc['acct']['elapsed']:
+                doc['acct']['elapsed'] = timeToSeconds(doc['acct']['elapsed'])
+            else:
+                doc['acct']['elapsed'] = 0
 
     return doc
 
@@ -340,7 +351,7 @@ def bulkIngest(es, dataPath):
     # for _, error in helpers.parallel_bulk(es, bsonIter(dataFiles, bulk=True), raise_on_error=False):
         if 'version conflict' not in error[OP_TYPE]['error']['reason']: # Ignore duplicate ID error
             errors.append(error)
-            if len(errors) % 500 == 0:
+            if len(errors) % 100 == 0:
                 print('Number of errors: ' + str(len(errors)))
                 print('Current error reason: ' + json.dumps(error[OP_TYPE]['error']['reason'], indent=4))
 
