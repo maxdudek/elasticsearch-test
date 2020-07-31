@@ -8,13 +8,13 @@
         "analysis": {
             "analyzer": {
                 "errors_analyzer": {
-                    "tokenizer": "errors_tokenizer",
                     "char_filter": [
                         "hostname_char_filter",
                         "pid_char_filter",
                         "timestamp_char_filter",
                         "erase_char_filter"
                     ],
+                    "tokenizer": "errors_tokenizer",
                     "filter": [
                         "trim",
                         "length_filter"

@@ -87,9 +87,15 @@ sqlExample2 = 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index"
 
 sqlExample3 = 'SELECT acct.ncpus, AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" GROUP BY acct.ncpus'
 
+"""
+
+
+"""
+
 sqlExample4 = 'SELECT MIN(acct.start_time), MAX(acct.start_time) FROM "jobs-index"'
 
 joeQuery = """
+
 SELECT COUNT (*)
 FROM "jobs-index"
 WHERE 
@@ -100,6 +106,7 @@ cpu.effcpus.user.avg > 0.9 AND
 acct.exit_status = 'COMPLETED' AND
 DATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND
 "cpu.nodecpus.all.cnt" - "cpu.jobcpus.all.cnt" = 0
+
 """
 sqlExampleQuote = 'SELECT AVG("cpu.nodecpus.user.avg"), COUNT(*) FROM "jobs-index" WHERE "acct.ncpus" = 16'
 
