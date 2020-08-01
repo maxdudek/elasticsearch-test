@@ -1,5 +1,6 @@
 {
     "index_name": "jobs-index",
+    "delete_index": true,
     "op_type": "create",
     "data_path": "/data/documents",
     "transform_function": "transformDocCcr",

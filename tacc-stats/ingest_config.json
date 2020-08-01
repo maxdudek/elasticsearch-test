@@ -1,5 +1,6 @@
 {
     "index_name": "tacc-stats",
+    "delete_index": true,
     "op_type": "create",
     "data_path": "/data/tacc-stats",
     "transform_function": "transformDocTaccStats",

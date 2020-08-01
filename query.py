@@ -4,7 +4,7 @@ import json
 
 INDEX = 'jobs-index'
 
-LOG_FILE = 'queries.log'
+LOG_FILE = 'ccr/queries.log'
 
 # Create a connection to the server
 es = Elasticsearch(hosts=['172.22.0.41'], timeout=30)
@@ -84,17 +84,10 @@ sqlExample = 'SELECT AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" WHER
 
 # SQL queries return 'null' if the requested field is not present in a doc
 sqlExample2 = 'SELECT "infiniband.qib0:1.switch-out-bytes.avg" FROM "jobs-index" LIMIT 100'
-
 sqlExample3 = 'SELECT acct.ncpus, AVG(cpu.nodecpus.user.avg), COUNT(*) FROM "jobs-index" GROUP BY acct.ncpus'
-
-"""
-
-
-"""
-
 sqlExample4 = 'SELECT MIN(acct.start_time), MAX(acct.start_time) FROM "jobs-index"'
 
-joeQuery = """
+bigSQLQuery = """
 
 SELECT COUNT (*)
 FROM "jobs-index"
@@ -108,14 +101,11 @@ DATE_DIFF('minutes', acct.start_time, acct.end_time) > 10 AND
 "cpu.nodecpus.all.cnt" - "cpu.jobcpus.all.cnt" = 0
 
 """
-sqlExampleQuote = 'SELECT AVG("cpu.nodecpus.user.avg"), COUNT(*) FROM "jobs-index" WHERE "acct.ncpus" = 16'
 
+if __name__ == '__main__':
 
+    # SQL queries can only be run when queryType == 'sql'
+    clearCache()
+    query(bigSQLQuery, queryType='sql')
+    # query(nestedQuery, queryType='count')
 
-# SQL queries can only be run when queryType == 'sql'
-clearCache()
-query(joeQuery, queryType='sql')
-# query(nestedQuery, queryType='count')
-
-
-# Test Comment 2
